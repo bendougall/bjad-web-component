@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<properties>
+		<!--
+		Patterns:
+			%d 				- Date in the format it states
+			%-5level        - leved of logging, padded to 5 characters
+			[%t]            - [Thread name]
+			%enc{%m}{CRLF}  - remove \n and \r characters, escaped with \\n and \\r
+			%20.20c         - category/logger name (20 character padding, 20 character max (last 20 characters)
+							     - ie. "     bjad.web.BJADWebComponent" versus "rg.eclipse.jetty.server.Server"
+			%n 				- new line 
+		 -->
+  		<property name="myPattern">%d{yyyy/MM/dd HH:mm:ss.SSS} %-5level %30.30c - %enc{%m}{CRLF} %xEx%n</property>
+	</properties>
+	<Appenders>
+		<Console name="ServerLogToConsole" target="SYSTEM_OUT">
+			<PatternLayout pattern="SERVER    :: ${myPattern}" />
+		</Console>
+		<Console name="ComponentLogToConsole" target="SYSTEM_ERR">
+			<PatternLayout pattern="COMPONENT :: ${myPattern}" />
+		</Console>
+		<Console name="PropertiesLogToConsole" target="SYSTEM_OUT">
+			<PatternLayout pattern="PROPERTIES:: ${myPattern}" />
+		</Console>
+		<Console name="DefaultLogToConsole" target="SYSTEM_OUT">
+			<PatternLayout pattern="(UNKNOWN) :: ${myPattern}" />
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Logger name="org.eclipse" level="info" additivity="false">
+			<AppenderRef ref="ServerLogToConsole" />
+		</Logger>
+		<Logger name="spark.embeddedserver.jetty" level="info" additivity="false">
+			<AppenderRef ref="ServerLogToConsole" />
+		</Logger>
+		<Logger name="bjad.web.BJADWebComponent" level="info" additivity="false">
+			<AppenderRef ref="ComponentLogToConsole" />
+		</Logger>
+		<Logger name="bjad.web.PropertiesToRequestConverterTests" level="debug" additivity="false">
+			<AppenderRef ref="PropertiesLogToConsole" />
+		</Logger>
+		<Logger name="pertiesToRequestConverterTests" level="debug" additivity="false">
+			<AppenderRef ref="PropertiesLogToConsole" />
+		</Logger>
+		<Root level="info">
+			<AppenderRef ref="DefaultLogToConsole" />
+		</Root>
+	</Loggers>
+</Configuration>
