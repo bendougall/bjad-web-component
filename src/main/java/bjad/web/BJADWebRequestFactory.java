@@ -182,7 +182,7 @@ public class BJADWebRequestFactory
          try
          {            
             Object o = Class.forName(className).newInstance();
-            request.setGsonImplementation(((ObjectToJSONProvider)o).getObjectToJSONMapper()); 
+            request.setJsonObjectMapper(((ObjectToJSONProvider)o).getObjectToJSONMapper()); 
          }
          catch (ClassCastException ex)
          {

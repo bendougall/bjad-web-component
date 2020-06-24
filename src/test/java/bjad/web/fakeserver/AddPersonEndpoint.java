@@ -22,14 +22,14 @@ public class AddPersonEndpoint extends FakeHTTPServerEndpoint
    @Override
    public Object handle(Request request, Response response) throws Exception
    {
-      Person p = GSON.fromJson(request.body(), Person.class);
+      Person p = GSON.readValue(request.body(), Person.class);
       if (p.getId() == null || p.getId().trim().isEmpty())
       {
          p.setId(UUID.randomUUID().toString());
       }
       PEOPLE.put(p.getId(), p);
       response.status(201);
-      return GSON.toJson(p);
+      return GSON.writeValueAsString(p);
    }
 
    /**

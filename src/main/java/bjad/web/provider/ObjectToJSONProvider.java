@@ -1,6 +1,6 @@
 package bjad.web.provider;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import bjad.web.BJADWebException;
 
@@ -26,5 +26,5 @@ public interface ObjectToJSONProvider
     *    Any exceptions in generating the GSON implementation
     *    will be thrown.
     */
-   public Gson getObjectToJSONMapper() throws BJADWebException;
+   public ObjectMapper getObjectToJSONMapper() throws BJADWebException;
 }

@@ -19,9 +19,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.google.gson.GsonBuilder;
-
 import bjad.web.BJADWebException;
+import bjad.web.BJADWebRequest;
 import bjad.web.MediaType;
 
 /**
@@ -63,7 +62,7 @@ public class BodyTypeTests
       assertThat("Default Ctor results in UTF-8 character set", sb.getCharacterSet(), is("UTF-8"));
       assertThat("Use Converter from request flag is true for blank ctor", sb.useConverterFromRequest(), is(true));
       
-      sb = new ObjectJSONStringBody(null, new GsonBuilder().disableHtmlEscaping().create());
+      sb = new ObjectJSONStringBody(null, new BJADWebRequest().getJsonObjectMapper());
       assertThat("Use Converter from request flag is false when impl provided", sb.useConverterFromRequest(), is(false));
       assertThat("Blank body does not return null.", sb.getBody(), notNullValue());
       
@@ -72,7 +71,7 @@ public class BodyTypeTests
       assertThat("Use Converter from request should be true", sb.useConverterFromRequest(), is(true));
       
       sb.setUseConverterFromRequest(true);
-      sb.setObjectToJsonConverter(new GsonBuilder().disableHtmlEscaping().create());
+      sb.setObjectToJsonConverter(new BJADWebRequest().getJsonObjectMapper());
       assertThat("Use Converter from request should be true", sb.useConverterFromRequest(), is(true));
       
       sb.setUseConverterFromRequest(false);
@@ -80,7 +79,7 @@ public class BodyTypeTests
       assertThat("Use Converter from request should be true", sb.useConverterFromRequest(), is(true));
       
       sb.setUseConverterFromRequest(false);
-      sb.setObjectToJsonConverter(new GsonBuilder().disableHtmlEscaping().create());
+      sb.setObjectToJsonConverter(new BJADWebRequest().getJsonObjectMapper());
       assertThat("Use Converter from request should be false", sb.useConverterFromRequest(), is(false));
    }
    

@@ -17,8 +17,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.google.gson.GsonBuilder;
-
 import bjad.web.body.ObjectJSONStringBody;
 import bjad.web.body.StringBody;
 import bjad.web.fakeserver.FakeHTTPServer;
@@ -117,7 +115,6 @@ public class BJADWebComponentTests
       Map<String, String> headers = new HashMap<>();
       headers.put("MessageID", "HeaderTest");
       req.setHeaders(headers);
-      req.setGsonImplementation(new GsonBuilder().disableHtmlEscaping().create());
       req.setCharacterSetForResponse("UTF-8");
       
       BJADWebComponent component = new BJADWebComponent();
@@ -125,7 +122,7 @@ public class BJADWebComponentTests
       
       String text = component.performWebCall(String.class).getData();
       assertThat("Get All operation returned", text != null && !text.trim().isEmpty(), is(true));
-      PersonList people = req.getGsonImplementation().fromJson(text, PersonList.class);
+      PersonList people = req.getJsonObjectMapper().readValue(text, PersonList.class);
       assertThat("List of people should not be null", people, notNullValue());
       assertThat("List of people should be at least 2 people", people.getPersons().size(), greaterThanOrEqualTo(2));
    }
@@ -159,7 +156,7 @@ public class BJADWebComponentTests
             InputStreamReader isr = new InputStreamReader(bis)
           )
       {
-         Person p = req.getGsonImplementation().fromJson(isr, Person.class);
+         Person p = req.getJsonObjectMapper().readValue(isr, Person.class);
          assertThat("person's id should match the one requested", p.getId(), is(id));
          assertThat("person's first name should match known value \"First\"", p.getFirstName(), is("First"));
          assertThat("person's last name should match know value \"User\"", p.getLastName(), is("User"));
@@ -187,7 +184,7 @@ public class BJADWebComponentTests
       
       String text = component.performWebCall(String.class, new ObjectJSONStringBody(p, "ISO_8859_1")).getData();
       assertThat("Add new person operation returned", text != null && !text.trim().isEmpty(), is(true));
-      p = req.getGsonImplementation().fromJson(text, Person.class);
+      p = req.getJsonObjectMapper().readValue(text, Person.class);
       assertThat("Add new person operation returned a random id", p.getId() != null && !p.getId().trim().isEmpty(), is(true));
       
       p = new Person("Another", "Newbie");
@@ -202,9 +199,9 @@ public class BJADWebComponentTests
       
       component = new BJADWebComponent(req);
       
-      text = component.performWebCall(String.class, new StringEntity(req.getGsonImplementation().toJson(p), StandardCharsets.ISO_8859_1)).getData();
+      text = component.performWebCall(String.class, new StringEntity(req.getJsonObjectMapper().writeValueAsString(p), StandardCharsets.ISO_8859_1)).getData();
       assertThat("Add new person operation returned", text != null && !text.trim().isEmpty(), is(true));
-      p = req.getGsonImplementation().fromJson(text, Person.class);
+      p = req.getJsonObjectMapper().readValue(text, Person.class);
       assertThat("Add new person operation returned a random id", p.getId(), is(id));
       
       p = new Person("Super", "Newb");
@@ -219,9 +216,9 @@ public class BJADWebComponentTests
       
       component = new BJADWebComponent(req);
       
-      text = component.performWebCall(String.class, new StringBody(req.getGsonImplementation().toJson(p))).getData();
+      text = component.performWebCall(String.class, new StringBody(req.getJsonObjectMapper().writeValueAsString(p))).getData();
       assertThat("Add new person operation returned", text != null && !text.trim().isEmpty(), is(true));
-      p = req.getGsonImplementation().fromJson(text, Person.class);
+      p = req.getJsonObjectMapper().readValue(text, Person.class);
       assertThat("Add new person operation returned a random id", p.getId(), is(id));
       
       p = new Person("Super", "Newb");
@@ -236,9 +233,9 @@ public class BJADWebComponentTests
       
       component = new BJADWebComponent(req);
       
-      text = component.performWebCall(String.class, new StringBody(req.getGsonImplementation().toJson(p), "ISO_8859_1")).getData();
+      text = component.performWebCall(String.class, new StringBody(req.getJsonObjectMapper().writeValueAsString(p), "ISO_8859_1")).getData();
       assertThat("Add new person operation returned", text != null && !text.trim().isEmpty(), is(true));
-      p = req.getGsonImplementation().fromJson(text, Person.class);
+      p = req.getJsonObjectMapper().readValue(text, Person.class);
       assertThat("Add new person operation returned a random id", p.getId(), is(id));
       
       req = new BJADWebRequest();
@@ -249,7 +246,7 @@ public class BJADWebComponentTests
       
       text = component.performWebCall(String.class).getData();
       assertThat("Get All operation returned", text != null && !text.trim().isEmpty(), is(true));
-      PersonList people = req.getGsonImplementation().fromJson(text, PersonList.class);
+      PersonList people = req.getJsonObjectMapper().readValue(text, PersonList.class);
       assertThat("List of people should not be null", people, notNullValue());
       assertThat("List of people should be at least 6 people", people.getPersons().size(), greaterThanOrEqualTo(6));
    }
@@ -405,7 +402,7 @@ public class BJADWebComponentTests
       
       String text = component.performWebCall(String.class, new ObjectJSONStringBody(p)).getData();
       assertThat("Add new person operation returned", text != null && !text.trim().isEmpty(), is(true));
-      p = req.getGsonImplementation().fromJson(text, Person.class);
+      p = req.getJsonObjectMapper().readValue(text, Person.class);
       assertThat("Add new person operation returned a random id", p.getId() != null && !p.getId().trim().isEmpty(), is(true));
             
       req = new BJADWebRequest();

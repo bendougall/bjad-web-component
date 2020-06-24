@@ -28,7 +28,7 @@ public class GetAllEndpoint extends FakeHTTPServerEndpoint
          peopleList.getPersons().add(p);
       }
       
-      return GSON.toJson(peopleList);
+      return GSON.writeValueAsString(peopleList);
    }
 
    /**

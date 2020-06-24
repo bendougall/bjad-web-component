@@ -4,8 +4,8 @@ import java.util.Map;
 
 import javax.net.ssl.SSLContext;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Request object containing all the information 
@@ -17,6 +17,12 @@ import com.google.gson.GsonBuilder;
  */
 public class BJADWebRequest
 {
+   /**
+    * Default object mapper that will be copied for each 
+    * instance of the request bean.
+    */
+   protected static final ObjectMapper DEFAULT_OBJECT_MAPPER = new ObjectMapper();
+   
    /**
     * The name of the logger to use for the 
     * operation.
@@ -57,11 +63,11 @@ public class BJADWebRequest
    protected SSLContext sslContext = null;
 
    /**
-    * The GSON implementation to use within the component.
-    * By default, the implementation will be one that
-    * disables the HTML escaping feature within JSON.
+    * The jackson object mapper to use within the component.
+    * By default, the implementation will be set to not fail 
+    * on unknown properties.
     */
-   protected Gson gsonImplementation = new GsonBuilder().disableHtmlEscaping().create();
+   protected ObjectMapper jsonObjectMapper = DEFAULT_OBJECT_MAPPER.copy();
    
    /**
     * The character set to use to build the string from the 
@@ -70,6 +76,11 @@ public class BJADWebRequest
     * set defined so it will be up to Java's default for strings.
     */
    protected String characterSetForResponse = null;
+   
+   static
+   {
+      DEFAULT_OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);      
+   }
    
    /**
     * @return 
@@ -202,20 +213,20 @@ public class BJADWebRequest
 
    /**
     * @return 
-    *   The gsonImplementation property within the WebOperationRequest instance
+    *   The jsonObjectMapper property within the BJADWebRequest instance
     */
-   public Gson getGsonImplementation()
+   public ObjectMapper getJsonObjectMapper()
    {
-      return this.gsonImplementation;
+      return this.jsonObjectMapper;
    }
 
    /**
-    * @param gsonImplementation 
-    *   The gsonImplementation to set within the WebOperationRequest instance
+    * @param jsonObjectMapper 
+    *   The jsonObjectMapper to set within the BJADWebRequest instance
     */
-   public void setGsonImplementation(Gson gsonImplementation)
+   public void setJsonObjectMapper(ObjectMapper jsonObjectMapper)
    {
-      this.gsonImplementation = gsonImplementation;
+      this.jsonObjectMapper = jsonObjectMapper;
    }
 
    /**

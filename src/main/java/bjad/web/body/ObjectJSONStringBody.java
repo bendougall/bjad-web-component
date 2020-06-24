@@ -4,7 +4,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.TextUtils;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import bjad.web.BJADWebException;
 
@@ -31,7 +32,7 @@ public class ObjectJSONStringBody extends AbstractBodyModel
     * The converter to use to make the object 
     * into a JSON string.
     */
-   protected Gson objectToJsonConverter;
+   protected ObjectMapper objectToJsonConverter;
    
    /**
     * Flag used to determine if the JSON converter
@@ -90,7 +91,7 @@ public class ObjectJSONStringBody extends AbstractBodyModel
     *    not null, the use converter from request flag 
     *    will be set to false.
     */
-   public ObjectJSONStringBody(Object body, Gson converter)
+   public ObjectJSONStringBody(Object body, ObjectMapper converter)
    {
       this(body, null, converter);
    }
@@ -108,7 +109,7 @@ public class ObjectJSONStringBody extends AbstractBodyModel
     *    not null, the use converter from request flag 
     *    will be set to false.
     */
-   public ObjectJSONStringBody(Object body, String characterSet, Gson converter)
+   public ObjectJSONStringBody(Object body, String characterSet, ObjectMapper converter)
    {
       this.setBody(body);
       this.setCharacterSet(characterSet);
@@ -164,7 +165,7 @@ public class ObjectJSONStringBody extends AbstractBodyModel
     * @return 
     *   The objectToJsonConverter property within the ObjectJSONStringBody instance
     */
-   public Gson getObjectToJsonConverter()
+   public ObjectMapper getObjectToJsonConverter()
    {
       return this.objectToJsonConverter;
    }
@@ -173,7 +174,7 @@ public class ObjectJSONStringBody extends AbstractBodyModel
     * @param objectToJsonConverter 
     *   The objectToJsonConverter to set within the ObjectJSONStringBody instance
     */
-   public void setObjectToJsonConverter(Gson objectToJsonConverter)
+   public void setObjectToJsonConverter(ObjectMapper objectToJsonConverter)
    {
       this.objectToJsonConverter = objectToJsonConverter;
    }
@@ -202,7 +203,14 @@ public class ObjectJSONStringBody extends AbstractBodyModel
    @Override
    public HttpEntity getEntity() throws BJADWebException
    {
-      return new StringEntity(getObjectToJsonConverter().toJson(this.getBody()), this.getCharacterSet());
+      try
+      {
+         return new StringEntity(getObjectToJsonConverter().writeValueAsString(this.getBody()), this.getCharacterSet());
+      }
+      catch (JsonProcessingException ex)
+      {
+         throw new BJADWebException(ex);
+      }
    }
 
    /**
@@ -211,8 +219,17 @@ public class ObjectJSONStringBody extends AbstractBodyModel
    @Override
    public String getLogString()
    {
-      return this.getCharacterSet() + " JSON String of " +
+      try
+      {
+         return this.getCharacterSet() + " JSON String of " +
             this.getBody().getClass().getCanonicalName() + 
-            ": " + getObjectToJsonConverter().toJson(this.getBody());
+            ": " + getObjectToJsonConverter().writeValueAsString(this.getBody());
+      }
+      catch (JsonProcessingException ex)
+      {
+         return this.getCharacterSet() + " JSON String of " +
+               this.getBody().getClass().getCanonicalName() + 
+               ": !!! failed to make JSON string due to " + ex.getClass().getSimpleName() + ", msg: " + ex.getMessage();
+      }
    }
 }

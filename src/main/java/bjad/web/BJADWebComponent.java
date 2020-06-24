@@ -31,6 +31,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.util.TextUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import bjad.web.body.AbstractBodyModel;
 import bjad.web.body.ObjectJSONStringBody;
 
@@ -228,7 +230,14 @@ public class BJADWebComponent
       {
          BJADWebResponse<T> returnVal = new BJADWebResponse<>();
          returnVal.copyNonDataValues(bytes);
-         returnVal.setData(operationRequest.getGsonImplementation().fromJson(content, clazz));
+         try
+         {
+            returnVal.setData(operationRequest.getJsonObjectMapper().readValue(content, clazz));
+         }
+         catch (JsonProcessingException ex)
+         {
+            throw new BJADWebException("Failed to convert data include JSON", ex);
+         }
          
          return (BJADWebResponse<T>)returnVal;
       }
@@ -402,7 +411,7 @@ public class BJADWebComponent
             // model is set to do so. 
             if (model.useConverterFromRequest())
             {
-               model.setObjectToJsonConverter(opRequest.getGsonImplementation());
+               model.setObjectToJsonConverter(opRequest.getJsonObjectMapper());
             }
             entityRequest.setEntity(model.getEntity());
             bodyMessage = model.getLogString();
@@ -428,10 +437,17 @@ public class BJADWebComponent
       return request;
    }
    
-   private void logSendorRecv(String direction, String url, HTTPMethodType method,  Map<String, String> headers, String bodyMessage)
+   private void logSendorRecv(String direction, String url, HTTPMethodType method,  Map<String, String> headers, String bodyMessage) throws BJADWebException
    {
-      logger.info(direction + " :: " + url + " (" + method.name() + ")" +
-            " :: " + (headers == null ? "<n/a>" : operationRequest.getGsonImplementation().toJson(headers)) + 
+      try
+      {
+         logger.info(direction + " :: " + url + " (" + method.name() + ")" +
+            " :: " + (headers == null ? "<n/a>" : operationRequest.getJsonObjectMapper().writeValueAsString(headers)) + 
             " :: " + (TextUtils.isBlank(bodyMessage) ? "" : bodyMessage));
+      }
+      catch (JsonProcessingException ex)
+      {
+         throw new BJADWebException(ex);
+      }
    }
 }

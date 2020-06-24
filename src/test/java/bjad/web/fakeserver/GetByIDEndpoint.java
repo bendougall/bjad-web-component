@@ -25,7 +25,7 @@ public class GetByIDEndpoint extends FakeHTTPServerEndpoint
       if (returnVal != null)
       {
          response.status(200);
-         return GSON.toJson(returnVal);
+         return GSON.writeValueAsString(returnVal);
       }
       else
       {

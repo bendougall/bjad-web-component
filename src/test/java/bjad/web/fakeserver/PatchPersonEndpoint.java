@@ -21,7 +21,7 @@ public class PatchPersonEndpoint extends FakeHTTPServerEndpoint
    public Object handle(Request request, Response response) throws Exception
    {
       Person returnVal = PEOPLE.get(request.params("id"));
-      Person p = GSON.fromJson(request.body(), Person.class);
+      Person p = GSON.readValue(request.body(), Person.class);
       if (returnVal != null)
       {
          PEOPLE.put(returnVal.getId(), p);

@@ -3,8 +3,8 @@ package bjad.web.fakeserver;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import bjad.web.HTTPMethodType;
 import bjad.web.model.Person;
@@ -27,13 +27,14 @@ public abstract class FakeHTTPServerEndpoint implements Route
    /**
     * GSON implementation to use.
     */
-   protected static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
+   protected static final ObjectMapper GSON = new ObjectMapper();
    
    /**
     * Creates a couple of person beans within the mapping. 
     */
    static 
    {
+      GSON.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
       Person p = new Person("00000000-0000-0000-0000-000000000000", "First", "User");
       PEOPLE.put(p.getId(), p);
       

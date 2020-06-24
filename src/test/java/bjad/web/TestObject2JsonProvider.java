@@ -1,7 +1,7 @@
 package bjad.web;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import bjad.web.provider.ObjectToJSONProvider;
 
@@ -17,8 +17,10 @@ public class TestObject2JsonProvider implements ObjectToJSONProvider
     * @see bjad.web.provider.ObjectToJSONProvider#getObjectToJSONMapper()
     */
    @Override
-   public Gson getObjectToJSONMapper() throws BJADWebException
+   public ObjectMapper getObjectToJSONMapper() throws BJADWebException
    {
-      return new GsonBuilder().disableHtmlEscaping().create();
+      ObjectMapper o = new ObjectMapper();
+      o.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+      return o;
    }
 }
