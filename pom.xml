@@ -386,7 +386,7 @@
 					<logViolationCountToConsole>true</logViolationCountToConsole>
 					<logViolationsToConsole>true</logViolationsToConsole>
 					<skipExec>true</skipExec>
-					<configLocation>C:\javaproj\BJAD_Project_App\bjad-common-parentpom\src\main\config\CheckstyleRules.xml</configLocation>
+					<configLocation>${project.basedir}\src\main\config\BJADWebComponent_CheckstyleRules.xml</configLocation>
 				</configuration>
 				<reportSets>
 					<reportSet>
