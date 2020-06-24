@@ -215,7 +215,7 @@
 					<enableSeveritySummary>true</enableSeveritySummary>
 					<logViolationCountToConsole>true</logViolationCountToConsole>
 					<logViolationsToConsole>true</logViolationsToConsole>
-					<configLocation>${project.basedir}\src\main\config\BJADWebComponent_CheckstyleRules</configLocation>
+					<configLocation>${project.basedir}/src/main/config/BJADWebComponent_CheckstyleRules.xml</configLocation>
 				</configuration>
 			</plugin>
 			<!-- Define the javadoc plugin to use -->
@@ -386,7 +386,7 @@
 					<logViolationCountToConsole>true</logViolationCountToConsole>
 					<logViolationsToConsole>true</logViolationsToConsole>
 					<skipExec>true</skipExec>
-					<configLocation>${project.basedir}\src\main\config\BJADWebComponent_CheckstyleRules.xml</configLocation>
+					<configLocation>${project.basedir}/src/main/config/BJADWebComponent_CheckstyleRules.xml</configLocation>
 				</configuration>
 				<reportSets>
 					<reportSet>
