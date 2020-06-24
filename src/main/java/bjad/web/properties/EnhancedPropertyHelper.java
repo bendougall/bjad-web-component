@@ -291,7 +291,13 @@ public class EnhancedPropertyHelper
             {
                try
                {
-                  File file = new File(propValue.substring(BJADWebConstants.ADDITIONAL_FILE_FILE_PREFIX.length()).trim());
+                  String filePathValue = propValue.substring(BJADWebConstants.ADDITIONAL_FILE_FILE_PREFIX.length()).trim();
+                  // Replace the backslash characters with the IO libraries path seperater character
+                  // to support backwards compatibility.
+                  filePathValue = filePathValue.replace('\\', File.separatorChar);
+                  
+                  // Make the file object, and then attempt to load the properties from that file.
+                  File file = new File(filePathValue);
                   loadProperties(file);
                }
                catch (Exception ex)

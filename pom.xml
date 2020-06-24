@@ -4,7 +4,7 @@
 
 	<groupId>bjad</groupId>
 	<artifactId>bjad-web-component</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 
 	<name>BJAD Web Component</name>
 	<description>Library containing a component allowing for java applications to call and download data from Rest APIs, Web Services, or even web pages.</description>
@@ -215,7 +215,7 @@
 					<enableSeveritySummary>true</enableSeveritySummary>
 					<logViolationCountToConsole>true</logViolationCountToConsole>
 					<logViolationsToConsole>true</logViolationsToConsole>
-					<configLocation>${project.basedir}\src\main\config\BJADWebComponent_CheckstyleRules</configLocation>
+					<configLocation>${project.basedir}/src/main/config/BJADWebComponent_CheckstyleRules.xml</configLocation>
 				</configuration>
 			</plugin>
 			<!-- Define the javadoc plugin to use -->
@@ -386,7 +386,7 @@
 					<logViolationCountToConsole>true</logViolationCountToConsole>
 					<logViolationsToConsole>true</logViolationsToConsole>
 					<skipExec>true</skipExec>
-					<configLocation>C:\javaproj\BJAD_Project_App\bjad-common-parentpom\src\main\config\CheckstyleRules.xml</configLocation>
+					<configLocation>${project.basedir}/src/main/config/BJADWebComponent_CheckstyleRules.xml</configLocation>
 				</configuration>
 				<reportSets>
 					<reportSet>
