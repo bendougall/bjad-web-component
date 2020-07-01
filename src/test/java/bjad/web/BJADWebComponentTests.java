@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.net.ssl.SSLContext;
 
@@ -22,6 +23,7 @@ import bjad.web.body.StringBody;
 import bjad.web.fakeserver.FakeHTTPServer;
 import bjad.web.model.Person;
 import bjad.web.model.PersonList;
+import bjad.web.properties.EnhancedPropertyHelper;
 
 /**
  * Unit tests for the BJADWebComponent class. 
@@ -31,14 +33,38 @@ import bjad.web.model.PersonList;
  */
 public class BJADWebComponentTests
 {   
+   private static BJADWebResponse<PersonList> GET_ALL_RESULT;
+   private static BJADWebResponse<Person> GET_RESULT;
+   
    /**
     * Starts the fake HTTP server prior to all the test
     * cases executing.
+    * 
+    * @throws Exception
+    *    Any exception will be thrown and cause the 
+    *    unit tests to fail.
     */
    @BeforeAll
-   public static void testsStarting()
+   public static void testsStarting() throws Exception
    {
       FakeHTTPServer.startServer(52525);
+      
+      EnhancedPropertyHelper props = new EnhancedPropertyHelper();
+      props.loadPropertiesFromClasspathFile("WebProps/Web.GetAll.properties");
+      
+      BJADWebRequest req = BJADWebRequestFactory.createRequest(props);
+      BJADWebComponent component = new BJADWebComponent(req);
+      GET_ALL_RESULT = component.performWebCall(PersonList.class);
+      
+      Properties p = new Properties();
+      p.put("person.id", "00000000-0000-0000-0000-000000000000");
+      props = new EnhancedPropertyHelper();
+      props.loadProperties(p);
+      props.loadPropertiesFromClasspathFile("WebProps/Web.Get.properties");
+      
+      req = BJADWebRequestFactory.createRequest(props);
+      component = new BJADWebComponent(req);
+      GET_RESULT = component.performWebCall(Person.class);
    }
    
    /**
@@ -464,5 +490,27 @@ public class BJADWebComponentTests
        }, "Should throw BJADWebException when no body method is used with a body passed.");
       
       assertThat("Response's header mapping is never null", new BJADWebResponse<>().getHeaders(), notNullValue());
+   }
+   
+   /**
+    * Verifies the get all result from the startup 
+    */
+   @Test
+   public void verifyGetAllResults()
+   {
+      assertThat("Get All operation returned", GET_ALL_RESULT.isGoodResponse(), is(true));
+      assertThat("List of people should not be null", GET_ALL_RESULT.getData(), notNullValue());
+      assertThat("List of people should be at least 2 people", GET_ALL_RESULT.getData().getPersons().size(), greaterThanOrEqualTo(2));
+   }
+   
+   /**
+    * Verifies the get result from the startup 
+    */
+   @Test
+   public void verifyGetResults()
+   {
+      assertThat("Get operation returned", GET_ALL_RESULT.isGoodResponse(), is(true));
+      assertThat("Person should not be null", GET_ALL_RESULT.getData(), notNullValue());
+      assertThat("Person's ID should be 00000000-0000-0000-0000-000000000000", GET_RESULT.getData().getId(), is("00000000-0000-0000-0000-000000000000"));
    }
 }

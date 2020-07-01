@@ -268,6 +268,7 @@ public class EnhancedPropertyHelper
    protected void loadPropertiesIntoCollection(Properties newProperties) throws BJADWebException
    {
       loadType = "additional";
+      List<String> filesToLoad = new ArrayList<>();
       for (Entry<Object, Object> entry : newProperties.entrySet())
       {         
          String propName = entry.getKey().toString().toLowerCase().trim();
@@ -277,39 +278,56 @@ public class EnhancedPropertyHelper
             
             if (propValue.toLowerCase().startsWith(BJADWebConstants.ADDITIONAL_FILE_CLASSPATH_PREFIX))
             {
-               try
-               {
-                  String filePath = propValue.substring(BJADWebConstants.ADDITIONAL_FILE_CLASSPATH_PREFIX.length()).trim();                  
-                  loadPropertiesFromClasspathFile(filePath);
-               }
-               catch (Exception ex)
-               {
-                  throw new BJADWebException("Failed to load properties from class path resource: " + propValue);
-               }
+               String filePath = propValue.substring(BJADWebConstants.ADDITIONAL_FILE_CLASSPATH_PREFIX.length()).trim();                  
+               filesToLoad.add("CP-" + filePath);
             }
             if (propValue.toLowerCase().startsWith(BJADWebConstants.ADDITIONAL_FILE_FILE_PREFIX))
             {
-               try
-               {
-                  String filePathValue = propValue.substring(BJADWebConstants.ADDITIONAL_FILE_FILE_PREFIX.length()).trim();
-                  // Replace the backslash characters with the IO libraries path seperater character
-                  // to support backwards compatibility.
-                  filePathValue = filePathValue.replace('\\', File.separatorChar);
-                  
-                  // Make the file object, and then attempt to load the properties from that file.
-                  File file = new File(filePathValue);
-                  loadProperties(file);
-               }
-               catch (Exception ex)
-               {
-                  throw new BJADWebException("Failed to load properties from file path: " + propValue);
-               }
+               String filePathValue = propValue.substring(BJADWebConstants.ADDITIONAL_FILE_FILE_PREFIX.length()).trim();
+               // Replace the backslash characters with the IO libraries path seperater character
+               // to support backwards compatibility.
+               filePathValue = filePathValue.replace('\\', File.separatorChar);
+               
+               filesToLoad.add("F-" + filePathValue);
             }
          }
          else
          {
-            logger.trace("Adding property: " + entry.getKey() + ", " + entry.getValue());
-            properties.put(entry.getKey(), entry.getValue());
+            if (!properties.containsKey(entry.getKey()))
+            {
+               logger.debug("Adding property: " + entry.getKey() + ", " + entry.getValue());
+               properties.put(entry.getKey(), entry.getValue());
+            }
+            else
+            {
+               logger.debug("Skipping " + entry.getKey().toString() + " property that was already loaded");
+            }
+         }
+      }
+      
+      for (String pathToLoad : filesToLoad)
+      {
+         if (pathToLoad.startsWith("CP-"))
+         {
+            try
+            {
+               loadPropertiesFromClasspathFile(pathToLoad.substring(3));
+            }
+            catch (Exception ex)
+            {
+               throw new BJADWebException("Failed to load properties from class path resource: " + pathToLoad.substring(3));
+            }
+         }
+         else
+         {
+            try
+            {
+               loadProperties(new File(pathToLoad.substring(2)));
+            }
+            catch (Exception ex)
+            {
+               throw new BJADWebException("Failed to load properties from file path: " + pathToLoad.substring(2));
+            }
          }
       }
    }
