@@ -24,10 +24,10 @@
 		
 		<maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
 		<maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
-		<maven-site-plugin.version>3.9.0</maven-site-plugin.version>
+		<maven-site-plugin.version>3.9.1</maven-site-plugin.version>
 		<maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
 		
-		<jackson.library.version>2.11.0</jackson.library.version>
+		<jackson.library.version>2.11.1</jackson.library.version>
 	</properties>
 	
 	<dependencies>
