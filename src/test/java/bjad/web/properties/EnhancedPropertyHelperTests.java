@@ -191,7 +191,7 @@ public class EnhancedPropertyHelperTests
    public void testInputStreamLoad()
    {
       EnhancedPropertyHelper e = new EnhancedPropertyHelper();
-      try (InputStream is = ClassLoader.getSystemResourceAsStream("BaseSet.properties"))
+      try (InputStream is = ClassLoader.getSystemResourceAsStream("Baseset.properties"))
       {
          e.loadProperties(is);
       }
@@ -200,7 +200,7 @@ public class EnhancedPropertyHelperTests
          Assertions.fail("Input Stream load should not have thrown " + ex.getClass().getSimpleName() + " whose message was " + ex.getMessage());
       }
       
-      try (InputStream is = ClassLoader.getSystemResourceAsStream("BaseSet.properties"))
+      try (InputStream is = ClassLoader.getSystemResourceAsStream("Baseset.properties"))
       {
          is.close();
          e.loadProperties(is);
