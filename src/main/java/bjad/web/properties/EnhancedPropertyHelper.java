@@ -235,11 +235,18 @@ public class EnhancedPropertyHelper
          logger.info("Loading " + loadType + " properties from classpath resource: " + pathWithinClasspath);
          try (InputStream is = ClassLoader.getSystemResourceAsStream(pathWithinClasspath))
          {
-            Properties p = new Properties();
-            p.load(is);
-            loadPropertiesIntoCollection(p);
-            
-            loadedResources.add(("CP:"+pathWithinClasspath).toUpperCase());
+            if (is != null)
+            {
+               Properties p = new Properties();
+               p.load(is);
+               loadPropertiesIntoCollection(p);
+               
+               loadedResources.add(("CP:"+pathWithinClasspath).toUpperCase());
+            }
+            else
+            {
+               throw new IOException("Could not load " + pathWithinClasspath + " from the classpath");
+            }
          }
          catch (IOException ex)
          {
