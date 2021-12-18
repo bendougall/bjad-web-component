@@ -54,7 +54,7 @@
 		<hamcrest-library.version>2.2</hamcrest-library.version>
 		<httpclient.version>4.5.13</httpclient.version>
 		<httpcore.version>4.4.14</httpcore.version>
-		<log4j.version>2.14.0</log4j.version>
+		<log4j.version>2.17.0</log4j.version>
 		<jackson.library.version>2.12.1</jackson.library.version>
 		<junit.version>5.7.0</junit.version>
 		<spark-core.version>2.9.3</spark-core.version>
