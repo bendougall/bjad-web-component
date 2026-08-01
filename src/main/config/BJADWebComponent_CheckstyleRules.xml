@@ -98,8 +98,7 @@
 		<module name="JavadocBlockTagLocation"/>
 		<module name="JavadocContentLocationCheck"/>
 		<module name="JavadocMethod">
-			<property name="scope" value="protected"/>
-			<property name="excludeScope" value="private"/>
+		   <property name="accessModifiers" value="public, protected, package"/> 
 			<property name="validateThrows" value="true"/>
 		</module>
 		<module name="JavadocType">

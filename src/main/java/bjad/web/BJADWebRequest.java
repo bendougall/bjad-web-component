@@ -79,7 +79,17 @@ public class BJADWebRequest
    
    static
    {
-      DEFAULT_OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);      
+      DEFAULT_OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+   }
+   
+   /**
+    * Default constructor creating a copy of the master object mapper and 
+    * registering any modules that are found on the classpath.
+    */
+   public BJADWebRequest()
+   {
+      jsonObjectMapper = DEFAULT_OBJECT_MAPPER.copy();
+      jsonObjectMapper.findAndRegisterModules();
    }
    
    /**
@@ -246,4 +256,22 @@ public class BJADWebRequest
    {
       this.characterSetForResponse = characterSetForResponse;
    }
+   
+   /**
+    * @return
+    *    true if the object mapper is set to fail on unknown properties, false otherwise
+    */
+   public boolean getFailOnUnknownPropertiesOn()
+   {
+      return this.jsonObjectMapper.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+   }  
+   
+   /**
+    * @param failOnUnknownProperties
+    *    true to set the object mapper to fail on unknown properties, false otherwise
+    */
+   public void setFailOnUnknownPropertiesOn(boolean failOnUnknownProperties)
+   {
+      this.jsonObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, failOnUnknownProperties);
+   }  
 }

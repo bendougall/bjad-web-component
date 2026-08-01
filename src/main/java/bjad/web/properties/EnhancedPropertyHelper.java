@@ -245,7 +245,7 @@ public class EnhancedPropertyHelper
             }
             else
             {
-               throw new IOException("Could not load " + pathWithinClasspath + " from the classpath");
+               throw new BJADWebException("Could not load " + pathWithinClasspath + " from the classpath");
             }
          }
          catch (IOException ex)

@@ -15,49 +15,50 @@
 		<allowJUnitFailure>false</allowJUnitFailure>
 		
 		<!-- Maven Plugin Management Versions -->
-		<maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
-		<maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
-		<maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
-		<maven-release-plugin.version>3.0.0-M1</maven-release-plugin.version>
+		<maven-antrun-plugin.version>3.2.0</maven-antrun-plugin.version>
+		<maven-assembly-plugin.version>3.8.0</maven-assembly-plugin.version>
+		<maven-dependency-plugin.version>3.11.0</maven-dependency-plugin.version>
+		<maven-release-plugin.version>3.3.1</maven-release-plugin.version>
 		
 		<!-- Maven Plugin Versions -->
-		<maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
-		<maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-		<maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version> 
-		<maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
-		<maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
+		<maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
+		<maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
+		<maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+		<maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version> 
+		<maven-enforcer-plugin.version>3.6.3</maven-enforcer-plugin.version>
+		<maven-install-plugin.version>3.1.4</maven-install-plugin.version>
 		<!-- 
          Get around the Eclipse Unknown Maven Configuration Error
          by defining this property.
       
          Source: https://stackoverflow.com/questions/56212981/eclipse-showing-maven-configuration-problem-unknown 
       -->
-		<maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>		
-		<maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
-		<maven-jxr-plugin.version>3.0.0</maven-jxr-plugin.version>
-		<maven-project-info-reports-plugin.version>3.1.1</maven-project-info-reports-plugin.version>
-		<maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>		
-		<maven-site-plugin.version>3.9.1</maven-site-plugin.version>
-		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-		<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
-		<maven-surefire-report-plugin.version>3.0.0-M5</maven-surefire-report-plugin.version>
+		<maven-jar-plugin.version>3.5.1</maven-jar-plugin.version>		
+		<maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
+		<maven-jxr-plugin.version>3.6.0</maven-jxr-plugin.version>
+		<maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version>
+		<maven-resources-plugin.version>3.5.0</maven-resources-plugin.version>		
+		<maven-site-plugin.version>3.22.0</maven-site-plugin.version>
+		<maven-source-plugin.version>3.4.0</maven-source-plugin.version>
+		<maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+		<maven-surefire-report-plugin.version>3.1.2</maven-surefire-report-plugin.version>
 		
 		<!-- Other plugin version -->
-		<jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
-		<taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
-		<versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
+		<taglist-maven-plugin.version>3.2.2</taglist-maven-plugin.version>
+		<versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
 		
 		<!-- Dependency Versions -->
-		<commons-codec.version>1.15</commons-codec.version>
-		<commons-logging.version>1.2</commons-logging.version>
-		<hamcrest-library.version>2.2</hamcrest-library.version>
-		<httpclient.version>4.5.13</httpclient.version>
-		<httpcore.version>4.4.14</httpcore.version>
-		<log4j.version>2.25.4</log4j.version>
-		<jackson.library.version>2.22.0</jackson.library.version>
-		<junit.version>5.7.0</junit.version>
-		<spark-core.version>2.9.3</spark-core.version>
+		<commons-codec.version>1.22.1</commons-codec.version>
+		<commons-logging.version>1.4.0</commons-logging.version>
+		<hamcrest-library.version>3.0</hamcrest-library.version>
+		<httpclient.version>4.5.14</httpclient.version>
+		<httpcore.version>4.4.16</httpcore.version>
+		<log4j.version>2.26.1</log4j.version>
+		<jackson.annotation.version>2.22</jackson.annotation.version>
+		<jackson.library.version>2.22.1</jackson.library.version>
+		<junit.version>5.14.4</junit.version>
+		<spark-core.version>2.9.4</spark-core.version>
 	</properties>
 	
 	<dependencies>
@@ -95,13 +96,18 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>${jackson.library.version}</version>
+			<version>${jackson.annotation.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>${jackson.library.version}</version>
 		</dependency>
+      <dependency>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-jsr310</artifactId>
+          <version>${jackson.library.version}</version>
+      </dependency>
 		
 		<!-- Testing dependencies -->
 		<dependency>
@@ -269,9 +275,9 @@
 					<!-- Only show errors and warnings. -->
 					<quiet>true</quiet>
 					<!-- Fail the build if javadoc errors are found. -->
-					<failsOnError>true</failsOnError>
+					<failOnError>true</failOnError>
 					<!-- Fail the build if javadoc warnings are found. -->
-					<failsOnWarning>true</failsOnWarning>
+					<failOnWarnings>true</failOnWarnings>
 					<!-- Only only protected or public declarations -->
 					<show>protected</show>					
 				</configuration>
