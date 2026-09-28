@@ -56,7 +56,7 @@
 		<httpcore.version>4.4.16</httpcore.version>
 		<log4j.version>2.26.1</log4j.version>
 		<jackson.annotation.version>2.22</jackson.annotation.version>
-		<jackson.library.version>2.22.1</jackson.library.version>
+		<jackson.library.version>2.22.2</jackson.library.version>
 		<junit.version>5.14.4</junit.version>
 		<spark-core.version>2.9.4</spark-core.version>
 	</properties>
